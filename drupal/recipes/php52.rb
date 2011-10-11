@@ -60,6 +60,9 @@ Package: php5-mysql
 Pin: origin packages.dotdeb.org
 Pin-Priority: 800
 
+Package: *
+Pin: origin packages.dotdeb.org
+Pin-Priority: 100
 EOH
 
 file "/etc/apt/preferences.d/dotdeb" do
