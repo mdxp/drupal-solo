@@ -19,7 +19,8 @@
 #
 
 include_recipe %w{apache2 apache2::mod_php5 apache2::mod_rewrite apache2::mod_expires}
-include_recipe %w{php php::module_mysql php::module_gd}
+include_recipe %w{php php::module_mysql php::module_gd php::module_apc}
+package "php5-apc"
 include_recipe "drupal::drush"
 include_recipe "mysql::server"
 #include_recipe "drupal::cron"
