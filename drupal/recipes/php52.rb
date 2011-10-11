@@ -1,8 +1,6 @@
 #
-# Cookbook Name:: aegir
+# Cookbook Name:: drupal
 # Recipe:: php52
-#
-# Copyright 2011, Patrick Connolly (Myplanet Digital)
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -26,9 +24,42 @@ apt_repository "dotdeb" do
 end
 
 prefs = <<-EOH
-Package: *
+Package: libapache2-mod-php5
 Pin: origin packages.dotdeb.org
 Pin-Priority: 800
+
+Package: php-pear
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
+Package: php5
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
+Package: php5-cli
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
+Package: php5-common
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
+Package: php5-dev
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
+Package: php5-curl
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
+Package: php5-gd
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
+Package: php5-mysql
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
 EOH
 
 file "/etc/apt/preferences.d/dotdeb" do
