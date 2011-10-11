@@ -32,6 +32,10 @@ Package: php-pear
 Pin: origin packages.dotdeb.org
 Pin-Priority: 800
 
+Package: php5-cgi
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
 Package: php5
 Pin: origin packages.dotdeb.org
 Pin-Priority: 800
