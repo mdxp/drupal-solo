@@ -28,6 +28,10 @@ Package: libapache2-mod-php5
 Pin: origin packages.dotdeb.org
 Pin-Priority: 800
 
+Package: php-apc
+Pin: origin packages.dotdeb.org
+Pin-Priority: 800
+
 Package: php-pear
 Pin: origin packages.dotdeb.org
 Pin-Priority: 800
