@@ -62,41 +62,46 @@ when "redhat", "centos", "scientific", "fedora"
   end
 end
 
-remote_file "#{Chef::Config[:file_cache_path]}/mod_auth_openid-0.4.tar.gz" do
-  source "http://butterfat.net/releases/mod_auth_openid/mod_auth_openid-0.4.tar.gz"
+_checksum = node['apache']['mod_auth_openid']['checksum']
+version = node['apache']['mod_auth_openid']['version']
+configure_flags = node['apache']['mod_auth_openid']['configure_flags']
+
+remote_file "#{Chef::Config[:file_cache_path]}/mod_auth_openid-#{version}.tar.gz" do
+  source "http://butterfat.net/releases/mod_auth_openid/mod_auth_openid-#{version}.tar.gz"
   mode 0644
+  checksum _checksum
 end
 
 bash "install mod_auth_openid" do
   cwd Chef::Config[:file_cache_path]
   code <<-EOH
-  tar zxvf mod_auth_openid-0.4.tar.gz
-  cd mod_auth_openid-0.4 && ./configure
+  tar zxvf mod_auth_openid-#{version}.tar.gz
+  cd mod_auth_openid-#{version} && ./configure #{configure_flags.join(' ')}
   perl -pi -e "s/-i -a -n 'authopenid'/-i -n 'authopenid'/g" Makefile
   make && make install
   EOH
   not_if { ::File.exists?("#{node[:apache][:lib_dir]}/modules/mod_auth_openid.so") }
 end
 
-file "#{node[:apache][:cache_dir]}/mod_auth_openid.db" do
+directory node[:apache][:mod_auth_openid][:cache_dir] do
   owner node[:apache][:user]
-  mode 0640
+  group node[:apache][:group]
+  mode 0700
 end
 
-template "#{node[:apache][:dir]}/mods-available/authopenid.load" do
-  source "mods/authopenid.load.erb"
+file node[:apache][:mod_auth_openid][:dblocation] do
   owner node[:apache][:user]
   group node[:apache][:group]
   mode 0644
 end
 
-apache_module "authopenid" do
-  filename "mod_auth_openid.so"
+template "#{node[:apache][:dir]}/mods-available/authopenid.load" do
+  source "mods/authopenid.load.erb"
+  owner "root"
+  group node[:apache][:root_group]
+  mode 0644
 end
 
-template "/usr/local/bin/mod_auth_openid.rb" do
-  source "mod_auth_openid.rb.erb"
-  owner node[:apache][:user]
-  group node[:apache][:user]
-  mode 0750
+apache_module "authopenid" do
+  filename "mod_auth_openid.so"
 end
